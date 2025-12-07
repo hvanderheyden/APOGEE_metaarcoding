@@ -14,18 +14,18 @@ cleanup() {
 ## Usage ####
 #############
 
-#chmod +x /media/herve/10TB/Apogee/6_mock/6_minimap2/minimap2_v02.sh
+#chmod +x /media/herve/10TB/Apogee/5_Scripts/APOGEE/APOGEE.sh
 
-# /media/herve/10TB/Apogee/6_mock/6_minimap2/minimap2_v02.sh \
+# /media/herve/10TB/Apogee/5_Scripts/APOGEE/APOGEE.sh \
 # -i /media/herve/10TB/Apogee/6_mock/6_minimap2/reads \
 # -o /media/herve/10TB/Apogee/6_mock/11_minimap2_clustered \
 # -r /media/herve/10TB/Apogee/6_mock/6_minimap2/ITS-RefDB_V02.mmi \
-# -s /media/herve/10TB/Apogee/6_mock/6_minimap2 \
 # -t 32 \
 # -c true \
 # -x 0.98 \
 # -T /media/herve/10TB/Apogee/6_mock/6_minimap2/taxonomy.tsv \
 # -F /media/herve/10TB/Apogee/5_Scripts/filter_with_confidence.py \
+# -S /media/herve/10TB/Apogee/5_Scripts/taxonomyTable.py \
 # -C 1
 
 #############
@@ -33,18 +33,18 @@ cleanup() {
 #############
 
 # Parse command-line arguments
-while getopts ":i:o:r:s:t:c:x:w:T:F:C:" opt; do
+while getopts ":i:o:r:t:c:x:w:T:F:S:C:" opt; do
   case ${opt} in
     i ) input_dir="$OPTARG" ;;
     o ) output_dir="$OPTARG" ;;
     r ) ref_db="$OPTARG" ;;
-    s ) script_dir="$OPTARG" ;;
     t ) threads="$OPTARG" ;;
     c ) enable_clustering="$OPTARG" ;;
     x ) identity="$OPTARG" ;;
     w ) wordlength="$OPTARG" ;;
     T ) taxonomy_db="$OPTARG" ;;
     F ) filter_script="$OPTARG" ;;
+    S ) taxonomy_script="$OPTARG" ;;
     C ) confidence="$OPTARG" ;;
     \? ) echo "ERROR: Invalid option: -$OPTARG" 1>&2; exit 1 ;;
     : ) echo "ERROR: Invalid option: -$OPTARG requires an argument" 1>&2; exit 1 ;;
@@ -56,9 +56,9 @@ shift $((OPTIND -1))
 # Validate Arguments   #
 ########################
 
-if [[ -z "${input_dir:-}" ]] || [[ -z "${output_dir:-}" ]] || [[ -z "${ref_db:-}" ]] || [[ -z "${script_dir:-}" ]] || [[ -z "${threads:-}" ]] || [[ -z "${taxonomy_db:-}" ]] || [[ -z "${filter_script:-}" ]]; then
+if [[ -z "${input_dir:-}" ]] || [[ -z "${output_dir:-}" ]] || [[ -z "${ref_db:-}" ]] || [[ -z "${threads:-}" ]] || [[ -z "${taxonomy_db:-}" ]] || [[ -z "${filter_script:-}" ]] || [[ -z "${taxonomy_script:-}" ]]; then
   echo "ERROR: Missing required arguments" >&2
-  echo "Usage: $0 -i <input_dir> -o <output_dir> -r <ref_db> -s <script_dir> -t <threads> -T <taxonomy_db> -F <filter_script> [-c <enable_clustering>] [-x <identity>] [-w <wordlength>] [-C <confidence>]" >&2
+  echo "Usage: $0 -i <input_dir> -o <output_dir> -r <ref_db> -t <threads> -T <taxonomy_db> -F <filter_script> -S <taxonomy_script> [-c <enable_clustering>] [-x <identity>] [-w <wordlength>] [-C <confidence>]" >&2
   exit 1
 fi
 
@@ -83,6 +83,11 @@ if [[ ! -f "${filter_script}" ]]; then
   exit 1
 fi
 
+if [[ ! -f "${taxonomy_script}" ]]; then
+  echo "ERROR: Taxonomy script does not exist: ${taxonomy_script}" >&2
+  exit 1
+fi
+
 # Set defaults if not provided
 identity="${identity:-0.97}"
 wordlength="${wordlength:-10}"
@@ -103,16 +108,17 @@ fi
 echo "==============================================="
 echo "Metabarcoding Pipeline v02"
 echo "==============================================="
-echo "Input dir:      ${input_dir}"
-echo "Output dir:     ${output_dir}"
-echo "Reference DB:   ${ref_db}"
-echo "Threads:        ${threads}"
-echo "Clustering:     ${enable_clustering}"
-echo "Identity:       ${identity}"
-echo "Word length:    ${wordlength}"
-echo "Taxonomy DB:    ${taxonomy_db}"
-echo "Filter script:  ${filter_script}"
-echo "Confidence:     ${confidence}"
+echo "Input dir:        ${input_dir}"
+echo "Output dir:       ${output_dir}"
+echo "Reference DB:     ${ref_db}"
+echo "Threads:          ${threads}"
+echo "Clustering:       ${enable_clustering}"
+echo "Identity:         ${identity}"
+echo "Word length:      ${wordlength}"
+echo "Taxonomy DB:      ${taxonomy_db}"
+echo "Filter script:    ${filter_script}"
+echo "Taxonomy script:  ${taxonomy_script}"
+echo "Confidence:       ${confidence}"
 echo "==============================================="
 echo ""
 
@@ -271,10 +277,6 @@ echo ""
 # Filtering  #
 #############
 
-#############
-# Filtering  #
-#############
-
 if [[ -f "${output_dir}/filteredPAFs/filtered_otu.tsv" ]]; then
     echo "✓ Step 6: Skipping PAF filtering with confidence (output already exists)"
 else
@@ -323,14 +325,9 @@ if [[ -f "${output_dir}/phyloseq_taxonomy.csv" ]]; then
     echo "✓ Step 8: Skipping taxonomy table creation (output already exists)"
 else
     echo "► Step 8: Creating taxonomy table"
-    echo "  Script: ${script_dir}/taxonomyTable.py"
+    echo "  Script: ${taxonomy_script}"
     
-    if [[ ! -f "${script_dir}/taxonomyTable.py" ]]; then
-      echo "ERROR: taxonomyTable.py not found at ${script_dir}/taxonomyTable.py" >&2
-      exit 1
-    fi
-    
-    "${script_dir}/taxonomyTable.py" -i "${output_dir}/otu_table.csv" -t "${taxonomy_db}" > "${output_dir}/phyloseq_taxonomy.csv" 2>/dev/null || { echo "ERROR: Taxonomy table creation failed" >&2; exit 1; }
+    "${taxonomy_script}" -i "${output_dir}/otu_table.csv" -t "${taxonomy_db}" > "${output_dir}/phyloseq_taxonomy.csv" 2>/dev/null || { echo "ERROR: Taxonomy table creation failed" >&2; exit 1; }
     
     echo "  ✓ Taxonomy table created: ${output_dir}/phyloseq_taxonomy.csv"
 fi
