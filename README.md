@@ -1,7 +1,8 @@
 
-### Installation
-
-## Dependencies
+### DESCRIPTION
+```
+```
+### Dependencies
 ```
 Required software (install via conda):
   - porechop: Adapter removal
@@ -21,6 +22,8 @@ chmod +x */APOGEE.sh
 ```
 ### Basic usage
 ```
+conda activate Apogee-pipeline
+
 /minimap2_v02.sh \
   -i <input_dir> \
   -o <output_dir> \
