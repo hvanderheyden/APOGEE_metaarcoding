@@ -80,11 +80,9 @@ conda activate Apogee-pipeline
 ```
   otu_table.csv
     Format: Accession,sample1,sample2,...,TotalCount,MappingConfidence
-    Contains: OTU IDs, read counts per sample, total counts, confidence scores
 
   taxonomy_table.csv
     Format: #OTU ID,Domain,Phylum,Class,Order,Family,Genus,Species
-    Contains: OTU IDs and full taxonomic classification only
 ```
 
 
