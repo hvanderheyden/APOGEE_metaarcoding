@@ -2,7 +2,7 @@
 ### DESCRIPTION
 ```
 ```
-![plot]([https://github.com/hvanderheyden/cimdec_phytophthora/blob/main/figures/Fig1_Map.jpg?raw=true](https://github.com/hvanderheyden/APOGEE_nanopore_metabarcoding/blob/main/APOGEE.png))
+![plot](https://github.com/hvanderheyden/APOGEE_nanopore_metabarcoding/blob/main/APOGEE.png)
 
 ### Dependencies
 ```
