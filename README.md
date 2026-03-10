@@ -32,10 +32,11 @@ conda env create -f APOGEE.yml
 # Activate environment
 conda activate Apogee-pipeline
 
-chmod +x */APOGEE.sh
+# Make the file executable
+chmod +x */APOGEE_V03.sh
 ```
 
-### Basic usage
+### Usage
 ```
 conda activate Apogee-pipeline
 
