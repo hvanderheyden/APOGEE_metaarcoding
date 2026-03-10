@@ -37,48 +37,42 @@ chmod +x */APOGEE_V03.sh
 ```
 
 ### Usage
-```
 conda activate Apogee-pipeline
 
-/minimap2_v02.sh \
-  -i <input_dir> \
-  -o <output_dir> \
-  -r <ref_db> \
-  -t <threads> \
-  -T <taxonomy_db> \
-  -F <filter_script> \
-  -S <taxonomy_script> \
-  [-c <enable_clustering>] \
-  [-x <identity>] \
-  [-w <wordlength>] \
-  [-C <confidence>]
-```
+/APOGEE_V03.sh -i <input_dir> -o <output_dir> -r <ref_db> -T <taxonomy_db> -F <filter_with_confidence.py> -S <taxonomyTable.py> -b <enable_read_splitting> -R <reverse_primer> -P <forward_primer> -c <enable_clustering> -x <clustering_identity> -w <wordlength> -C <mapping_confidence> -v <query_coverage> -k <identity_threshold> 
+
+
 ### REQUIRED ARGUMENTS
 ```
 -i <input_dir>
-     Path to directory containing input FASTQ files (gzipped or uncompressed)
+     Path to directory containing input FASTQ files
 
-  -o <output_dir>
+-o <output_dir>
      Path to directory for output files (will be created if it doesn't exist)
 
-  -r <ref_db>
-     Path to minimap2 index file (.mmi) for reference database
+-r <ref_db>
+     Path to the minimap2 index file (.mmi) for reference database
      Note: Create with: minimap2 -d output.mmi sequences.fasta
 
-  -s <script_dir>
+-T <taxonomy_db>
+      Path to the taxonomy file (.tsv) for reference database
+
+-F <filter_with_confidence.py>
+     Path to filter_with_confidence.py script for PAF filtering
+
+-S <taxonomyTable.py>
      Path to directory containing taxonomyTable.py script
 
-  -t <threads>
+-t <threads>
      Number of threads for parallel processing (positive integer)
-
-  -T <taxonomy_db>
-     Path to taxonomy database file (TSV format: accession<tab>taxonomy)
-
-  -F <filter_script>
-     Path to filter_with_confidence.py script for PAF filtering
 ```
+
 ### OPTIONAL ARGUMENTS
 ```
+
+
+
+
   -c <enable_clustering>
      Enable sequence clustering with VSEARCH (true/false, default: false)
 
@@ -90,6 +84,22 @@ conda activate Apogee-pipeline
 
   -C <confidence>
      Minimum confidence threshold for filtering (default: 1)
+
+
+-b <enable_read_splitting>
+-R <reverse_primer>
+-P <forward_primer>
+
+
+-v <query_coverage>
+-k <identity_threshold> 
+
+
+
+
+
+
+
 
 ```
 ### OUTPUT FILES
