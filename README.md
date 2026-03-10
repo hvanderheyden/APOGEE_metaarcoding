@@ -2,6 +2,8 @@
 ### DESCRIPTION
 ```
 ```
+![plot](https://github.com/hvanderheyden/cimdec_phytophthora/blob/main/figures/Fig1_Map.jpg?raw=true)
+
 ### Dependencies
 ```
 Required software (install via conda):
