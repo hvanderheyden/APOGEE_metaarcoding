@@ -10,24 +10,31 @@ removal, but we have added an optional read splitting step using [bbmap's](https
 
 ![plot](https://github.com/hvanderheyden/APOGEE_nanopore_metabarcoding/blob/main/APOGEE.png)
 
-### Dependencies
-```
-Required software (install via conda):
-  - porechop: Adapter removal
-  - NanoFilt: Length/quality filtering
-  - vsearch: Sequence clustering
-  - minimap2: Read mapping and alignment
-  - yacrd: Chimera detection
-  - Python 3 with pandas: Data processing
-```
+
 ## Installation
+
+It is recommanded to install the pipeline within a conda environment using the provided yml file. See [here](https://docs.conda.io/en/latest/miniconda.html#latest-miniconda-installer-links) for instructions to install conda. 
+
+
+1. Clone repository:
+```commandline
+# Make sure you have "git" install in your base enviroment:
+conda install git
+
+# Clone repo to your prefered location:
+git clone https://github.com/hvanderheyden/APOGEE_nanopore_metabarcoding
 ```
-Install all dependencies:
-  conda env create -f APOGEE.yml
-  conda activate Apogee-pipeline
+2. Create virtual environment:
+```commandline
+# create conda environment
+conda env create -f APOGEE.yml 
+
+# Activate environment
+conda activate Apogee-pipeline
 
 chmod +x */APOGEE.sh
 ```
+
 ### Basic usage
 ```
 conda activate Apogee-pipeline
