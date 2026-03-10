@@ -1,6 +1,8 @@
 
 ### DESCRIPTION
 ```
+This pipeline is used for Nanopore metabarcoding. It allows fastq files (post basecalling) to be processed until tables are obtained that are ready to be imported into R. 
+
 ```
 ![plot](https://github.com/hvanderheyden/APOGEE_nanopore_metabarcoding/blob/main/APOGEE.png)
 
