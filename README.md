@@ -69,9 +69,14 @@ conda activate Apogee-pipeline
 
 ### OPTIONAL ARGUMENTS
 ```
+  -b <enable_read_splitting>
+     Enable read splitting using bbmap's removesmartbell.sh
 
+  -R <reverse_primer>
+     Sequence of the reverse primer used in the read splitting step
 
-
+  -P <forward_primer>
+     Sequence of the forward primer used in the read splitting step
 
   -c <enable_clustering>
      Enable sequence clustering with VSEARCH (true/false, default: false)
@@ -83,23 +88,13 @@ conda activate Apogee-pipeline
      Word length for clustering k-mer matching (default: 10)
 
   -C <confidence>
-     Minimum confidence threshold for filtering (default: 1)
+     Mapping confidence threshold for filtering (default: 1)
 
+  -v <query_coverage>
+     Query coverage threshold for filtering (default: 1)
 
--b <enable_read_splitting>
--R <reverse_primer>
--P <forward_primer>
-
-
--v <query_coverage>
--k <identity_threshold> 
-
-
-
-
-
-
-
+  -k <identity_threshold> 
+     Identity threshold for filtering (default: 1)
 
 ```
 ### OUTPUT FILES
