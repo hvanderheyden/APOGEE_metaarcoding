@@ -9,6 +9,8 @@ of [Latorre-Pérez et al. 2021](https://www.frontiersin.org/journals/microbiolog
 The current version is still using [Porechop](https://github.com/rrwick/Porechop) for adapter 
 removal, but we have added an optional primer trimming step using [bbmap's](https://bbmap.org/tools/removesmartbell) removesmartbell tool. [Nanofilt](https://github.com/wdecoster/nanofilt) is used to filter reads based on quality (≥12) and length (≥350 bp). We use [vsearch](https://github.com/torognes/vsearch) --uchime_denovo for chimera filtering and for an optional clustering step. [seqtk](https://github.com/lh3/seqtk) is used for FASTQ to FASTA conversion (when clustering is disabled). Finally, [minimap2](https://github.com/lh3/minimap2) is used for read mapping, while OTU and taxonomy tables are generated using customized Python scripts.
 
+The filtering step leading to the creation of the pseudo OTU table incorporate filtering based on mapping quality, query coverage, and percent identity, metrics extracted from Minimap2’s PAF output. Assignments meeting these thresholds are classified at the species level; otherwise, genus-level classification is retained.  
+
 ![plot](https://github.com/hvanderheyden/APOGEE_nanopore_metabarcoding/blob/main/APOGEE.png)
 
 
